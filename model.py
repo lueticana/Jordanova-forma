@@ -1,3 +1,4 @@
+import numpy as np
 velikost = len(matrika)
 
 
@@ -60,3 +61,8 @@ class Jordanova:
                     nova_matrika.append(matrika[i][:stolpec] + matrika[i][stolpec + 1:])
                 det = sestevanje_polinomov(det, (-1)**(stolpec) * mnozenje_polinomov(matrika[0][stolpec], karakteristicni(nova_matrika)))
         return det
+
+    def lastne_vrednosti():
+        kar = karakteristicni()
+        kar.reverse()
+        return np.roots(kar)
