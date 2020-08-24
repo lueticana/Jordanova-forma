@@ -1,7 +1,8 @@
 import numpy as np
 velikost = len(matrika)
 
-
+KOMPLEKSNE = 'lastne vrednosti niso realne'
+REALNE = 'lastne vrednosti so realne'
 
 class Jordanova:
 
@@ -62,7 +63,25 @@ class Jordanova:
                 det = sestevanje_polinomov(det, (-1)**(stolpec) * mnozenje_polinomov(matrika[0][stolpec], karakteristicni(nova_matrika)))
         return det
 
-    def lastne_vrednosti():
+    def nicle():
         kar = karakteristicni()
         kar.reverse()
         return np.roots(kar)
+
+    def realne():
+        lastne = nicle()
+        return len(lastne) == len(lastne.real[abs(lastne.imag)<1e-5])
+    
+    def lastne_vrednosti():
+        lastne = nicle().tolist()
+        for i in len(lastne):
+            lastne[i] = round(lastne[i], 3) * (-1)
+        slovar = {}
+        for vred in lastne:
+            if vred in slovar.keys():
+                slovar[vred] += 1
+            else:
+                slovar[vred] = 1
+        return slovar
+
+
