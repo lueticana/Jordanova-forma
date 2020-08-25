@@ -84,4 +84,57 @@ class Jordanova:
                 slovar[vred] = 1
         return slovar
 
+    def stevilo_celic():
+        lastne = lastne_vrednosti()
+        for vred in lastne.items():
+            if lastne[vred] == 1:
+                return 1
+            else:
+                geom veckr = st stevilo_celic
+
+    def dim():
+
+
+    def gaussova_eliminacija(matrika):
+        for pozicija in range(len(matrika)):
+            if matrika[pozicija][pozicija] == 0:
+                vse_nic = 1    
+                for vrstica in range(pozicija, len(matrika)):
+                    if matrika[vrstica][pozicija] !=  0:
+                        matrika[pozicija], matrika[vrstica] = matrika[vrstica], matrika[pozicija]
+                        vse_nic = 0
+                        break
+                if vse_nic == 1:
+                    continue
+            p = matrika[pozicija][pozicija]
+            for i in range(len(matrika)):    
+                matrika[pozicija][i] = matrika[pozicija][i] / p
+            for vrstica in range(pozicija + 1, len(matrika)):
+                a = matrika[vrstica][pozicija]
+                for stolpec in range(pozicija, len(matrika)):    
+                    matrika[vrstica][stolpec] = matrika[vrstica][stolpec] - (matrika[pozicija][stolpec] * a)
+        return matrika
+
+    def rang(matrika):
+        rang = len(matrika)
+        for vrstica in gaussova_eliminacija(matrika):
+            if vrstica == [0] * len(matrika):
+                rang -= 1
+        return rang
+
+
+
+
+                    
+
+
+            
+
+
+
+
+
+
+
+
 
