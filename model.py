@@ -84,16 +84,6 @@ class Jordanova:
                 slovar[vred] = 1
         return slovar
 
-    def stevilo_celic():
-        lastne = lastne_vrednosti()
-        for vred in lastne.items():
-            if lastne[vred] == 1:
-                return 1
-            else:
-                geom veckr = st stevilo_celic
-
-    def dim():
-
 
     def gaussova_eliminacija(matrika):
         for pozicija in range(len(matrika)):
@@ -121,6 +111,47 @@ class Jordanova:
             if vrstica == [0] * len(matrika):
                 rang -= 1
         return rang
+
+
+    def stevilo_celic(lastna_vrednost):
+        matrika = self.matrika
+        for i in range(len(matrika)):
+            matrika[i][i] = matrika[i][i] - lastna_vrednost
+        return rang(matrika)
+
+    def mnozenje_matrik(a, b):
+        A = np.array(a)
+        B = np.array(b)
+        return np.matmul(A, B). tolist()
+
+
+    def velikosti_celic(lastna_vrednost):
+        matrika = self.matrika
+        for i in range(len(matrika)):
+            matrika[i][i] = matrika[i][i] - lastna_vrednost
+        vektorji = []
+        rang1 = rang(matrika)
+        vektorji.append(rang1)
+        zmnozena = mnozenje_matrik(matrika, matrika)
+        rang2 = rang(zmnozena)
+        while rang2 > rang1:
+            vektorji.append(rang2)
+            rang1 = rang2
+            zmnozena = mnozenje_matrik(matrika, zmnozena)
+            rang2 = rang(zmnozena)
+        velikost = len(vektorji)
+        celice = {velikost : vektorji[-1]}
+        for i in range(2, len(vektorji) + 1):
+            velikost -= 1
+            celice[velikost] = vektorji[-i] - vektorji[-(i - 1)]
+        return celice
+
+        
+
+
+
+            
+
 
 
 
