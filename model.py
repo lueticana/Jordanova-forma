@@ -20,7 +20,7 @@ def sestevanje_polinomov(p, r):
 def gaussova_eliminacija(m):
     matrika = []
     for vrstica in m:
-        matrika.append(vrstica)
+        matrika.append(vrstica[:])
     for pozicija in range(len(matrika)):
         if matrika[pozicija][pozicija] == 0:
             vse_nic = 1    
@@ -124,21 +124,23 @@ class Izracun:
         matrika = self.matrika[:]
         for i in range(self.velikost):
             matrika[i][i] = matrika[i][i] - lastna_vrednost
-        vektorji = []
+        jedra = []
         rang1 = rang(matrika)
-        vektorji.append(rang1)
+        jedra.append(self.velikost - rang1)
         zmnozena = mnozenje_matrik(matrika, matrika)
         rang2 = rang(zmnozena)
-        while rang2 > rang1:
-            vektorji.append(rang2)
+        while rang2 < rang1:
+            jedra.append(self.velikost - rang2)
             rang1 = rang2
             zmnozena = mnozenje_matrik(matrika, zmnozena)
             rang2 = rang(zmnozena)
-        velikost = len(vektorji)
-        celice = {velikost : vektorji[-1]}
-        for i in range(2, len(vektorji) + 1):
+        for i in range(1, len(jedra)):
+            jedra[-i] = jedra[-i] - jedra[-(i + 1)]
+        velikost = len(jedra)
+        celice = {velikost : jedra[-1]}
+        for i in range(2, len(jedra) + 1):
             velikost -= 1
-            celice[velikost] = vektorji[-i] - vektorji[-(i - 1)]
+            celice[velikost] = jedra[-i] - jedra[-(i - 1)]
         return celice
 
     def celica(self, lastna_vrednost, velikost):
