@@ -7,7 +7,6 @@ def mnozenje_polinomov(p, r):
     produkt = [0] * dolzina
     for i in range(len(p)):
         for j in range(len(r)):
-            print(produkt, p ,r )
             produkt[i + j] += p[i] * r[j]
     return produkt
 
@@ -18,7 +17,10 @@ def sestevanje_polinomov(p, r):
         daljsi[i] += krajsi[i]
     return daljsi
 
-def gaussova_eliminacija(matrika):
+def gaussova_eliminacija(m):
+    matrika = []
+    for vrstica in m:
+        matrika.append(vrstica)
     for pozicija in range(len(matrika)):
         if matrika[pozicija][pozicija] == 0:
             vse_nic = 1    
@@ -40,7 +42,8 @@ def gaussova_eliminacija(matrika):
 
 def rang(matrika):
     rang = len(matrika)
-    for vrstica in gaussova_eliminacija(matrika):
+    gauss = gaussova_eliminacija(matrika)
+    for vrstica in gauss:
         if vrstica == [0] * len(matrika):
             rang -= 1
     return rang
@@ -49,6 +52,11 @@ def mnozenje_matrik(a, b):
     A = np.array(a)
     B = np.array(b)
     return np.matmul(A, B). tolist()
+
+def predznak(stevilo, polinom):
+    for i in range(len(polinom)):
+        polinom[i] = polinom[i] * stevilo
+    return polinom
 
 
 class Izracun:
@@ -73,18 +81,16 @@ class Izracun:
 
     def karakteristicni(self, matrika=None):
         if matrika == None:
-            matrika = self.matrika
-        matrika_pripravljena = self.priprava(matrika)
-        if len(matrika_pripravljena) == 1:
-            det = matrika_pripravljena[0][0]
+            matrika = self.priprava()
+        if len(matrika) == 1:
+            det = matrika[0][0]
         else:
             det = []
-            for stolpec in range(len(matrika_pripravljena[0])):
+            for stolpec in range(len(matrika)):
                 nova_matrika = []
-                for i in range(1, len(matrika_pripravljena)):
+                for i in range(1, len(matrika)):
                     nova_matrika.append(matrika[i][:stolpec] + matrika[i][stolpec + 1:])
-                print(nova_matrika)
-                det = sestevanje_polinomov(det, (-1)**(stolpec) * mnozenje_polinomov(matrika_pripravljena[0][stolpec], self.karakteristicni(nova_matrika)))
+                det = sestevanje_polinomov(det, predznak((-1)**(stolpec), mnozenje_polinomov(matrika[0][stolpec], self.karakteristicni(nova_matrika))))
         return det
 
     def nicle(self):
@@ -99,7 +105,7 @@ class Izracun:
     def lastne_vrednosti(self):
         lastne = self.nicle().tolist()
         for i in range(len(lastne)):
-            lastne[i] = round(lastne[i], 3) * (-1)
+            lastne[i] = round(lastne[i], 3)
         slovar = {}
         for vred in lastne:
             if vred in slovar.keys():
