@@ -176,9 +176,26 @@ class Izracun:
             polozaj += len(zozitev)
         return jordanova
 
-def nov_izracun(matrika):
-    izracun = Izracun(matrika)
-    return izracun
+
+
+
+class Jordanova:
+
+    def __init__(self):
+        self.matrike = {}
+
+    def prost_id(self):
+        if self.matrike.keys():
+            return max(self.igre.keys()) + 1
+        else:
+            return 0
+    
+    def nov_izracun(self, matrika):
+        id_matrike = self.prost_id()
+        izracun = Izracun(matrika)
+        self.matrike[id_matrike] = igra
+        return id_matrike
+    
 
 
 
