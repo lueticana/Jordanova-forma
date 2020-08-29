@@ -43,8 +43,8 @@ def gaussova_eliminacija(m):
 def rang(matrika):
     rang = len(matrika)
     gauss = gaussova_eliminacija(matrika)
-    for vrstica in gauss:
-        if vrstica == [0] * len(matrika):
+    for pozicija in range(len(gauss)):
+        if gauss[pozicija][pozicija] == 0:
             rang -= 1
     return rang
 
@@ -100,12 +100,12 @@ class Izracun:
 
     def realne(self):
         lastne = self.nicle()
-        return len(lastne) == len(lastne.real[abs(lastne.imag)<1e-5])
+        return len(lastne) == len(lastne.real[abs(lastne.imag)<1e-3])
     
     def lastne_vrednosti(self):
         lastne = self.nicle().tolist()
         for i in range(len(lastne)):
-            lastne[i] = round(lastne[i], 3)
+            lastne[i] = round(lastne[i].real, 3)
         slovar = {}
         for vred in lastne:
             if vred in slovar.keys():
@@ -121,7 +121,9 @@ class Izracun:
         return rang(matrika)
 
     def velikosti_celic(self, lastna_vrednost):
-        matrika = self.matrika[:]
+        matrika = []
+        for vrstica in self.matrika:
+            matrika.append(vrstica[:])
         for i in range(self.velikost):
             matrika[i][i] = matrika[i][i] - lastna_vrednost
         jedra = []
@@ -145,6 +147,8 @@ class Izracun:
 
     def celica(self, lastna_vrednost, velikost):
         celica = []
+        if int(lastna_vrednost) == lastna_vrednost:
+            lastna_vrednost = int(lastna_vrednost)
         for i in range(velikost):
             if i == velikost - 1:
                 celica.append([0] * i + [lastna_vrednost])
@@ -162,10 +166,11 @@ class Izracun:
             polozaj_znotraj_zozitve = 0
             velikost_zozitve = lastne[vrednost]
             for velikost in celice.keys():
-                celica = self.celica(vrednost, velikost)
-                for vrstica in celica:
-                    zozitev.append([0] * polozaj_znotraj_zozitve + vrstica + [0] * (velikost_zozitve - (polozaj + len(vrstica))))
-                polozaj_znotraj_zozitve += velikost
+                for i in range(celice[velikost]):
+                    celica = self.celica(vrednost, velikost)
+                    for vrstica in celica:
+                        zozitev.append([0] * polozaj_znotraj_zozitve + vrstica + [0] * (velikost_zozitve - (polozaj_znotraj_zozitve + len(vrstica))))
+                    polozaj_znotraj_zozitve += velikost
             for vrstica in zozitev:
                 jordanova.append([0] * polozaj + vrstica + [0] * (self.velikost - (polozaj + len(vrstica))))
             polozaj += len(zozitev)
