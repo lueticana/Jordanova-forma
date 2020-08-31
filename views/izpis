@@ -1,3 +1,16 @@
 %rebase osnova
 
-konec
+Pripadajoca Jordanova kanonicna forma: <br><br>
+<table>
+    %for vrstica in jordanova:
+        <tr>
+        %for vrednost in vrstica:
+            <td>{{vrednost}}</td>
+        %end
+        </tr>
+        
+    %end
+</table>
+
+<br><br>
+Opomba: Lastne vrednosti program racuna numericno, zato lahko pride do nekaj napak. Se opravicujemo za nevsecnosti.

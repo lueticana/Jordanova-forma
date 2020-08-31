@@ -1,8 +1,17 @@
 %rebase osnova
-Vnesite matriko: <br>
-<form action="/nov_izracun/">
-    <input type="text" name='matrika' size="4">
-    
+Vpisite matriko: <br><br>
 
-    <button type="submit">Izracunaj!</button>
+<form action='/nov_izracun/'>
+    <table>
+        %for vrstica in range(velikost):
+            <tr>
+            %for i in range(vrstica * velikost, (vrstica + 1) * velikost):
+                <td><input type="text" name={{str(i)}} size="4"></td>
+            %end
+            </tr>
+        %end
+        </table>
+        <br>
+    <input type="submit" value="Izracunaj!">
 </form>
+
