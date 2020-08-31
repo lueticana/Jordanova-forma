@@ -5,7 +5,7 @@ Pripadajoca Jordanova kanonicna forma: <br><br>
     %for vrstica in jordanova:
         <tr>
         %for vrednost in vrstica:
-            <td>{{vrednost}}</td>
+            <td>{{round(vrednost, 3)}}</td>
         %end
         </tr>
         
