@@ -1,7 +1,5 @@
 import numpy as np
 
-KOMPLEKSNE = 'lastne vrednosti niso realne'
-
 def mnozenje_polinomov(p, r):
     dolzina = (len(p) - 1) + (len(r) - 1) + 1
     produkt = [0] * dolzina
@@ -181,20 +179,50 @@ class Izracun:
 
 class Jordanova:
 
-    def __init__(self):
-        self.matrike = {}
+    def __init__(self, datoteka):
+        self.nabor = {}
+        self.datoteka = datoteka
 
     def prost_id(self):
-        if self.matrike.keys():
-            return max(self.igre.keys()) + 1
+        if self.nabor.keys():
+            return max(self.nabor.keys()) + 1
         else:
             return 0
     
     def nov_izracun(self, matrika):
-        id_matrike = self.prost_id()
+        id_izracuna = self.prost_id()
         izracun = Izracun(matrika)
-        self.matrike[id_matrike] = igra
-        return id_matrike
+        self.nabor[id_izracuna] = izracun
+        return id_izracuna
+
+    def realne(self, id_izracuna):
+        izracun = self.nabor[id_izracuna][0]
+        matrika = self.nabor[id_izracuna][2]
+        return izracun.realne(matrika)
+
+    def jordanova(self, id_izracuna, matrika):
+        izracun = self.nabor[id_izracuna][0]
+        #matrika = self.izracuni[id_izracuna][2]
+        return izracun.jordanova(matrika)
+
+    def nalozi_iz_datoteke(self):
+        with open(self.datoteka) as f:
+            podatki = json.load(f)
+        self.nabor = {}
+        for id_izracuna, izracun in podatki.items():
+            self.igre[int(id_igre)] = izcracun
+
+    def zapisi_v_datoteko(self):
+        podatki = {}
+        for id_izracuna, izracun in self.nabor.items():
+            podatki[id_izracuna] = izracun
+        with open(self.datoteka, 'w') as f:
+            json.dump(podatki, f)
+     
+
+
+
+
     
 
 
