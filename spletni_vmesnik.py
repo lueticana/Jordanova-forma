@@ -1,41 +1,47 @@
 import model, bottle
 
+datoteka = 'nabor.json'
+
 bottle.TEMPLATE_PATH.insert(0, 'views')
 
-jordanova = model.Jordanova()
+jordanova = model.Jordanova(datoteka)
+
 SECRET = "JORDANOVA"
 
 @bottle.get('/')
 def zacetek():
     return bottle.template('zacetna_stran')
 
-@bottle.get('/vnos_matrike/')
+@bottle.get('/vnos_matrike/')    
 def zahtevaj_vnos():
-    #id_izracuna = bottle.request.get_cookie("id_izracuna", secret=SECRET)
     velikost = int(bottle.request.query['velikost'])
+    bottle.response.set_cookie("velikost", velikost, path='/', secret=SECRET)
     return bottle.template('vnos', velikost=velikost)
 
-@bottle.post('/nov_izracun/')
-def nova_igra():
-    matrika =  bottle.request.query['matrika']
-    #velikost = 2
-    #for i in range(velikost ** 2):
-    #    matrika += bottle.request.query[str(i)]
+@bottle.get('/nov_izracun/')
+def nov_izracun():
+    velikost = bottle.request.get_cookie("velikost", secret=SECRET)
+    matrika = []
+    for vrstica in range(velikost):
+        v = []
+        for i in range(vrstica * velikost, (vrstica + 1) * velikost):
+            v.append(int(bottle.request.query[str(i)]))
+        matrika.append(v)
+    jordanova.nalozi_iz_datoteke()
     id_izracuna = jordanova.nov_izracun(matrika)
+    jordanova.zapisi_v_datoteko()
     bottle.response.set_cookie("id_izracuna", id_izracuna, path='/', secret=SECRET)
-    bottle.redirect(f'/jordanova/')
+    return bottle.redirect('/jordanova/')
 
 @bottle.get('/jordanova/')
 def izpis():
+    jordanova.nalozi_iz_datoteke()
     id_izracuna = bottle.request.get_cookie("id_izracuna", secret=SECRET)
     izracun = jordanova.nabor[id_izracuna]
-    koncna = izracun.jordanova()
-    return bottle.template('izpis', jordanova=koncna)
-
-#@bottle.get()
-#def zacetek():
-#    #id_matrike = bottle.request.get_cookie("id_matrike", secret=SECRET)
-#    matrika = jordanova.matrike[id_matrike]
-#    return bottle.template('matrika', matrika=matrika, id_matrike=id_matrike)
+    if izracun.realne():
+        koncna = izracun.jordanova()
+        return bottle.template('izpis', jordanova=koncna)
+    else:
+        return bottle.template('kompleksne_lastne')
 
 bottle.run(reloader=True, debug=True)    

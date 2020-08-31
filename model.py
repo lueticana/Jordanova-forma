@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 def mnozenje_polinomov(p, r):
     dolzina = (len(p) - 1) + (len(r) - 1) + 1
@@ -19,30 +20,36 @@ def gaussova_eliminacija(m):
     matrika = []
     for vrstica in m:
         matrika.append(vrstica[:])
-    for pozicija in range(len(matrika)):
-        if matrika[pozicija][pozicija] == 0:
+    vrstica = 0
+    for stolpec in range(len(matrika)):
+        if matrika[vrstica][stolpec] == 0:
             vse_nic = 1    
-            for vrstica in range(pozicija, len(matrika)):
-                if matrika[vrstica][pozicija] !=  0:
-                    matrika[pozicija], matrika[vrstica] = matrika[vrstica], matrika[pozicija]
+            for ostale_vrstice in range(vrstica, len(matrika)):
+                if matrika[ostale_vrstice][stolpec] !=  0:
+                    matrika[vrstica], matrika[ostale_vrstice] = matrika[ostale_vrstice], matrika[vrstica]
                     vse_nic = 0
                     break
             if vse_nic == 1:
                 continue
-        p = matrika[pozicija][pozicija]
+        p = matrika[vrstica][stolpec]
         for i in range(len(matrika)):    
-            matrika[pozicija][i] = matrika[pozicija][i] / p
-        for vrstica in range(pozicija + 1, len(matrika)):
-            a = matrika[vrstica][pozicija]
-            for stolpec in range(pozicija, len(matrika)):    
-                matrika[vrstica][stolpec] = matrika[vrstica][stolpec] - (matrika[pozicija][stolpec] * a)
+            matrika[vrstica][i] = matrika[vrstica][i] / p
+        for ostale_vrstice in range(vrstica + 1, len(matrika)):
+            a = matrika[ostale_vrstice][stolpec]
+            for ostali_stolpci in range(stolpec, len(matrika)):
+                razlika = matrika[ostale_vrstice][ostali_stolpci] - (matrika[vrstica][ostali_stolpci] * a)
+                if razlika < 1e-5:
+                    matrika[ostale_vrstice][ostali_stolpci] = 0
+                else:
+                    matrika[ostale_vrstice][ostali_stolpci] = razlika
+        vrstica += 1
     return matrika
 
 def rang(matrika):
     rang = len(matrika)
     gauss = gaussova_eliminacija(matrika)
-    for pozicija in range(len(gauss)):
-        if gauss[pozicija][pozicija] == 0:
+    for vrstica in gauss:
+        if vrstica == [0] * len(gauss):
             rang -= 1
     return rang
 
@@ -55,7 +62,6 @@ def predznak(stevilo, polinom):
     for i in range(len(polinom)):
         polinom[i] = polinom[i] * stevilo
     return polinom
-
 
 class Izracun:
 
@@ -112,12 +118,6 @@ class Izracun:
                 slovar[vred] = 1
         return slovar
 
-    def stevilo_celic(self, lastna_vrednost):
-        matrika = self.matrika[:]
-        for i in range(self.velikost):
-            matrika[i][i] = matrika[i][i] - lastna_vrednost
-        return rang(matrika)
-
     def velikosti_celic(self, lastna_vrednost):
         matrika = []
         for vrstica in self.matrika:
@@ -134,6 +134,7 @@ class Izracun:
             rang1 = rang2
             zmnozena = mnozenje_matrik(matrika, zmnozena)
             rang2 = rang(zmnozena)
+            print(rang1, rang2)
         for i in range(1, len(jedra)):
             jedra[-i] = jedra[-i] - jedra[-(i + 1)]
         velikost = len(jedra)
@@ -172,6 +173,7 @@ class Izracun:
             for vrstica in zozitev:
                 jordanova.append([0] * polozaj + vrstica + [0] * (self.velikost - (polozaj + len(vrstica))))
             polozaj += len(zozitev)
+        print(jordanova)
         return jordanova
 
 
@@ -195,27 +197,18 @@ class Jordanova:
         self.nabor[id_izracuna] = izracun
         return id_izracuna
 
-    def realne(self, id_izracuna):
-        izracun = self.nabor[id_izracuna][0]
-        matrika = self.nabor[id_izracuna][2]
-        return izracun.realne(matrika)
-
-    def jordanova(self, id_izracuna, matrika):
-        izracun = self.nabor[id_izracuna][0]
-        #matrika = self.izracuni[id_izracuna][2]
-        return izracun.jordanova(matrika)
-
     def nalozi_iz_datoteke(self):
         with open(self.datoteka) as f:
             podatki = json.load(f)
         self.nabor = {}
         for id_izracuna, izracun in podatki.items():
-            self.igre[int(id_igre)] = izcracun
+            self.nabor[int(id_izracuna)] = (
+                Izracun(izracun['matrika']))
 
     def zapisi_v_datoteko(self):
         podatki = {}
         for id_izracuna, izracun in self.nabor.items():
-            podatki[id_izracuna] = izracun
+            podatki[id_izracuna] = {'matrika': izracun.matrika}
         with open(self.datoteka, 'w') as f:
             json.dump(podatki, f)
      
