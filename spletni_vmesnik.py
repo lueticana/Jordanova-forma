@@ -25,7 +25,12 @@ def nov_izracun():
     for vrstica in range(velikost):
         v = []
         for i in range(vrstica * velikost, (vrstica + 1) * velikost):
-            v.append(int(bottle.request.query[str(i)]))
+            vrednost = bottle.request.query[str(i)]
+            try: 
+                int(vrednost)
+            except ValueError:
+                return bottle.template('napacni_znaki')
+            v.append(int(vrednost))
         matrika.append(v)
     jordanova.nalozi_iz_datoteke()
     id_izracuna = jordanova.nov_izracun(matrika)
@@ -38,8 +43,14 @@ def izpis():
     jordanova.nalozi_iz_datoteke()
     id_izracuna = bottle.request.get_cookie("id_izracuna", secret=SECRET)
     izracun = jordanova.nabor[id_izracuna]
+    matrika = izracun.matrika
     if izracun.realne():
         koncna = izracun.jordanova()
+        if len(koncna) != len(matrika):
+            return bottle.template('napaka')
+        for vrstica in koncna:
+            if len(vrstica) != len(matrika):
+                return bottle.template('napaka')
         return bottle.template('izpis', jordanova=koncna)
     else:
         return bottle.template('kompleksne_lastne')

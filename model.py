@@ -38,10 +38,7 @@ def gaussova_eliminacija(m):
             a = matrika[ostale_vrstice][stolpec]
             for ostali_stolpci in range(stolpec, len(matrika)):
                 razlika = matrika[ostale_vrstice][ostali_stolpci] - (matrika[vrstica][ostali_stolpci] * a)
-                if razlika < 1e-5:
-                    matrika[ostale_vrstice][ostali_stolpci] = 0
-                else:
-                    matrika[ostale_vrstice][ostali_stolpci] = razlika
+                matrika[ostale_vrstice][ostali_stolpci] = razlika
         vrstica += 1
     return matrika
 
@@ -104,7 +101,7 @@ class Izracun:
 
     def realne(self):
         lastne = self.nicle()
-        return len(lastne) == len(lastne.real[abs(lastne.imag)<1e-3])
+        return len(lastne) == len(lastne.real[abs(lastne.imag)<1e-5])
     
     def lastne_vrednosti(self):
         lastne = self.nicle().tolist()
@@ -134,7 +131,6 @@ class Izracun:
             rang1 = rang2
             zmnozena = mnozenje_matrik(matrika, zmnozena)
             rang2 = rang(zmnozena)
-            print(rang1, rang2)
         for i in range(1, len(jedra)):
             jedra[-i] = jedra[-i] - jedra[-(i + 1)]
         velikost = len(jedra)
@@ -173,11 +169,9 @@ class Izracun:
             for vrstica in zozitev:
                 jordanova.append([0] * polozaj + vrstica + [0] * (self.velikost - (polozaj + len(vrstica))))
             polozaj += len(zozitev)
-        print(jordanova)
         return jordanova
 
-
-
+        
 
 class Jordanova:
 
