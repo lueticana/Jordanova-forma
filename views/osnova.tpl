@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{'Jordanova kanonicna forma'}}</title>
+    <title>{{'Jordanova kanonična forma'}}</title>
     <style>
         table, th, td {
             border: 1px solid black;

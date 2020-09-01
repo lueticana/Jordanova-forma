@@ -1,6 +1,6 @@
 %rebase osnova
 
-Pripadajoca Jordanova kanonicna forma: <br><br>
+Pripadajoča Jordanova kanonična forma: <br><br>
 <table>
     %for vrstica in jordanova:
         <tr>
@@ -13,4 +13,4 @@ Pripadajoca Jordanova kanonicna forma: <br><br>
 </table>
 
 <br><br>
-Opomba: Lastne vrednosti program racuna numericno, zato lahko pride do nekaj napak. Se opravicujemo za nevsecnosti.
+Opomba: Lastne vrednosti program računa numerično, zato lahko pride do nekaj napak. Za nevšečnosti se opravičujemo.

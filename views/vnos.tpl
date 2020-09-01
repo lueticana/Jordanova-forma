@@ -12,6 +12,6 @@ Vpisite matriko: <br><br>
         %end
         </table>
         <br>
-    <input type="submit" value="Izracunaj!">
+    <input type="submit" value="Izračunaj!">
 </form>
 

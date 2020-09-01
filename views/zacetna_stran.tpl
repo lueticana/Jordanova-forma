@@ -10,5 +10,5 @@
             <option value="5">5x5</option>
             <option value="6">6x6</option>
         </select>
-        <input type="submit" value="Zacni">
+        <input type="submit" value="Začni">
     </form>
