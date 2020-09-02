@@ -101,7 +101,7 @@ class Izracun:
 
     def realne(self):
         lastne = self.nicle()
-        return len(lastne) == len(lastne.real[abs(lastne.imag)<1e-5])
+        return len(lastne) == len(lastne.real[abs(lastne.imag)<1e-3])
     
     def lastne_vrednosti(self):
         lastne = self.nicle().tolist()
@@ -171,7 +171,7 @@ class Izracun:
             polozaj += len(zozitev)
         return jordanova
 
-        
+
 
 class Jordanova:
 
