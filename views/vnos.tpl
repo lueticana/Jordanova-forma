@@ -1,7 +1,7 @@
 %rebase osnova
 Vpisite matriko: <br><br>
 
-<form action='/nov_izracun/'>
+<form action='/nov_izracun/{{velikost}}/'>
     <table>
         %for vrstica in range(velikost):
             <tr>

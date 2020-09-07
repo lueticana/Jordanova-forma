@@ -15,12 +15,10 @@ def zacetek():
 @bottle.get('/vnos_matrike/')    
 def zahtevaj_vnos():
     velikost = int(bottle.request.query['velikost'])
-    bottle.response.set_cookie("velikost", velikost, path='/', secret=SECRET)
     return bottle.template('vnos', velikost=velikost)
 
-@bottle.get('/nov_izracun/')
-def nov_izracun():
-    velikost = bottle.request.get_cookie("velikost", secret=SECRET)
+@bottle.get('/nov_izracun/<velikost:int>/')
+def nov_izracun(velikost):
     matrika = []
     for vrstica in range(velikost):
         v = []
