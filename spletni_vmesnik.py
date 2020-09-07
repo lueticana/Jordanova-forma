@@ -47,12 +47,12 @@ def izpis():
     if izracun.realne():
         koncna = izracun.jordanova()
         if len(koncna) != len(matrika):
-            return bottle.template('napaka')
+            return bottle.template('napaka', matrika=matrika)
         for vrstica in koncna:
             if len(vrstica) != len(matrika):
-                return bottle.template('napaka')
+                return bottle.template('napaka', matrika=matrika)
         return bottle.template('izpis', jordanova=koncna)
     else:
-        return bottle.template('kompleksne_lastne')
+        return bottle.template('kompleksne_lastne', matrika=matrika)
 
 bottle.run(reloader=True, debug=True)    
