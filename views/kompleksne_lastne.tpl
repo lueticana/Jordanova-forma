@@ -1,6 +1,19 @@
 %rebase osnova
 
-Vnešena matrika ima kompleksne lastne vrednosti.
+Vnešena matrika: <br><br>
+<table>
+    %for vrstica in matrika:
+        <tr>
+        %for vrednost in vrstica:
+            <td>{{vrednost}}</td>
+        %end
+        </tr>
+    %end
+</table>
+<br><br>
+
+
+Matrika ima kompleksne lastne vrednosti.
 <br>
 Ta program deluje samo za matrike z realnimi lastnimi vrednostmi.
 

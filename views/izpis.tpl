@@ -1,5 +1,18 @@
 %rebase osnova
 
+Vnešena matrika: <br><br>
+<table>
+    %for vrstica in matrika:
+        <tr>
+        %for vrednost in vrstica:
+            <td>{{vrednost}}</td>
+        %end
+        </tr>
+    %end
+</table>
+<br><br>
+
+
 Pripadajoča Jordanova kanonična forma: <br><br>
 <table>
     %for vrstica in jordanova:
